@@ -12,10 +12,10 @@ ANNOUNCEMENT = ":drop_of_blood: First blood for **{challenge}** from the **{cate
 
 
 
-def announce_to_discord(db , discord : str , challenge , already_in):
-    res = requests.post(discord, json={
+def announce_to_discord(rctf , db , discord : str , challenge , already_in):
+    res = rctf.session.post(discord, json={
             "content": ANNOUNCEMENT.format(challenge=challenge["name"], category=challenge["category"] ,user=challenge["first_blood"])
-        }, timeout=5)
+        }, timeout=15)
     if res.status_code in [200, 204]:
         db.add_first_blood_to_db(challenge)
         already_in.append(challenge)
@@ -31,7 +31,7 @@ def announce(db , rctf , discord:str):
     for chall in not_announced_challenges:
         user = rctf.first_solve(chall['id'])
         chall['first_blood'] = user['userName']
-        announce_to_discord(db,discord,chall,already_in)
+        announce_to_discord(rctf , db,discord,chall,already_in)
 
 
 

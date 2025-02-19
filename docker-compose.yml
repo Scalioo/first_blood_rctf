@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  ctf-announcer:
+    build: .
+    container_name: ctf-announcer
+    env_file:
+      - .env
+    restart: always
